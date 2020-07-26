@@ -2,12 +2,13 @@ import { Registration } from "./../models/registration";
 import { HttpService } from "./http.service";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { Observable } from "rxjs";
+import { Observable, Subject } from "rxjs";
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthenticationService {
+  private _subject = new Subject<any>();
   constructor(private _httpService: HttpService) {}
 
   private registrationUrl: string = `${
@@ -26,7 +27,15 @@ export class AuthenticationService {
     environment.USER_API_URL + environment.LOG_OUT_USER
   }`;
 
-  public registration(registrationDto: Registration) {
+  private getAllActiveUsersUrl: string = `${
+    environment.USER_API_URL + environment.ACTIVE_USERS_URL
+  }`;
+
+  public get autoRefesh() {
+    return this._subject;
+  }
+
+  public registration(registrationDto: Registration): Observable<any> {
     console.log("registration service reached : ", this.registrationUrl);
     return this._httpService.postMethod(
       this.registrationUrl,
@@ -43,7 +52,7 @@ export class AuthenticationService {
     );
   }
 
-  public login(loginDto: any) {
+  public login(loginDto: any): Observable<any> {
     console.log("fetching loginUrl : ", this.loginUrl);
     return this._httpService.postMethod(this.loginUrl, loginDto, "");
   }
@@ -55,6 +64,11 @@ export class AuthenticationService {
       "",
       ""
     );
+  }
+
+  public getAllActiveUsers(): Observable<any> {
+    console.log("fetching active users service : ");
+    return this._httpService.getMethod(this.getAllActiveUsersUrl, "");
   }
 
   isLoggedIn() {

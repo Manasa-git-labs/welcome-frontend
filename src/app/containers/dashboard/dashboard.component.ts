@@ -1,4 +1,4 @@
-import { NgxSpinnerService } from "ngx-spinner";
+import { ActiveUser } from "./../../models/ActiveUser";
 import { Router } from "@angular/router";
 import { MatSnackBar } from "@angular/material";
 import { AuthenticationService } from "src/app/services/authentication.service";
@@ -11,21 +11,28 @@ import { Component, OnInit } from "@angular/core";
 })
 export class DashboardComponent implements OnInit {
   firstName: string;
+  activeUsers: ActiveUser[];
+  size: number;
   constructor(
     private _authenticationService: AuthenticationService,
     private _matSnackBar: MatSnackBar,
-    private _router: Router,
-    private _spinner: NgxSpinnerService
+    private _router: Router
   ) {
     this.firstName = localStorage.firstName;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this._authenticationService.autoRefesh.subscribe(() => {
+      this.getAllActiveUsers();
+    });
+    this.getAllActiveUsers();
+  }
 
   logOut() {
     this._authenticationService.logOutUser(localStorage.token).subscribe(
       (response: any) => {
         console.log("response: ", response);
+        this.size = this.activeUsers.length;
         this._matSnackBar.open(
           "Hallo Mr/s. " + this.firstName + ", " + response.message,
           "ok",
@@ -36,6 +43,19 @@ export class DashboardComponent implements OnInit {
       },
       (errors: any) => {
         console.log("errors : ", errors);
+      }
+    );
+  }
+
+  getAllActiveUsers() {
+    this._authenticationService.getAllActiveUsers().subscribe(
+      (response: any) => {
+        console.log("responses : ", response);
+        this.activeUsers = response.list;
+        // console.log("active users: ", this.activeUsers);
+      },
+      (errors: any) => {
+        console.log("errors: ", errors);
       }
     );
   }

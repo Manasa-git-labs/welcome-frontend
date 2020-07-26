@@ -1,4 +1,14 @@
-<div class="signout" align=center>
-    <h3>Hi {{firstName}}</h3>
-    <button mat-stroked-button color="primary" (click)="logOut()">Log out</button>
+<div class="container" align=center>
+    <div class="active-user">
+        <h2>Active Users</h2>
+        <div *ngFor="let activeUser of activeUsers">
+            Name: {{activeUser.firstName}}&nbsp;{{activeUser.lastName}},&nbsp;&nbsp;
+            Number:{{activeUser.mobileNumber}},&nbsp;&nbsp;
+            Username: {{activeUser.userName}}
+        </div>
+    </div>
+    <div class="signout" align=center>
+        <h3>Hi {{firstName}}</h3>
+        <button mat-stroked-button color="primary" (click)="logOut()">Log out</button>
+    </div>
 </div>

@@ -10,6 +10,7 @@ export const environment = {
   ACTIVATE_ACCOUNT_URL: "/verification",
   LOGIN_URL: "/login",
   LOG_OUT_USER: "/signout",
+  ACTIVE_USERS_URL: "/active",
 };
 
 /*
