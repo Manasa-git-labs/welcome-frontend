@@ -22,6 +22,10 @@ export class AuthenticationService {
     environment.USER_API_URL + environment.LOGIN_URL
   }`;
 
+  private signOutUserUrl: string = `${
+    environment.USER_API_URL + environment.LOG_OUT_USER
+  }`;
+
   public registration(registrationDto: Registration) {
     console.log("registration service reached : ", this.registrationUrl);
     return this._httpService.postMethod(
@@ -42,6 +46,15 @@ export class AuthenticationService {
   public login(loginDto: any) {
     console.log("fetching loginUrl : ", this.loginUrl);
     return this._httpService.postMethod(this.loginUrl, loginDto, "");
+  }
+
+  public logOutUser(token: string): Observable<any> {
+    console.log("Inside service of logout.");
+    return this._httpService.patchMethod(
+      `${this.signOutUserUrl}/${token}`,
+      "",
+      ""
+    );
   }
 
   isLoggedIn() {

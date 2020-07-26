@@ -9,6 +9,7 @@ export const environment = {
   REGISTRATION_URL: "/register",
   ACTIVATE_ACCOUNT_URL: "/verification",
   LOGIN_URL: "/login",
+  LOG_OUT_USER: "/signout",
 };
 
 /*
